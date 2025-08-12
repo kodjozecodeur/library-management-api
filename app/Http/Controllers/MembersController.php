@@ -12,15 +12,8 @@ class MembersController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        //retrieve all members
+        return Members::all();
     }
 
     /**
@@ -29,37 +22,41 @@ class MembersController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:members',
+            'phone' => 'nullable'
+        ]);
+        return Members::create($request->all());
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Members $members)
+    public function show(Members $member)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Members $members)
-    {
-        //
+        return $member;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Members $members)
+    public function update(Request $request, Members $member)
     {
         //
+        $member->update($request->all());
+        return $member;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Members $members)
+    public function destroy(Members $member)
     {
         //
+        $member->delete();
+        return response()->json(['message' => 'Member deleted successfully - No content'], 200);
     }
 }
